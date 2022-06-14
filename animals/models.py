@@ -11,7 +11,6 @@ class Animal (models.Model):
 
     groups = models.ForeignKey('groups.Group', on_delete=models.CASCADE, related_name='groups')
     characteriscs = models.ManyToManyField(
-        'characteristcs.Characteristc', 
-        on_delete=models.CASCADE, 
+        'characteristics.Characteristic',
         related_name='characteristcs'
     ) 
