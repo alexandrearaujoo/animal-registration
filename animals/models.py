@@ -1,5 +1,3 @@
-from operator import mod
-import re
 from django.db import models
 
 # Create your models here.
@@ -9,8 +7,9 @@ class Animal (models.Model):
     weight = models.FloatField()
     sex = models.CharField(max_length=15)
 
-    groups = models.ForeignKey('groups.Group', on_delete=models.CASCADE, related_name='groups')
-    characteriscs = models.ManyToManyField(
+    group = models.ForeignKey('groups.Group', on_delete=models.CASCADE, related_name='animals')
+
+    characteristics = models.ManyToManyField(
         'characteristics.Characteristic',
-        related_name='characteristcs'
+        related_name='characteristics'
     ) 
