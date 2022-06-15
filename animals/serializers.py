@@ -25,14 +25,19 @@ class AnimalSerializer(serializers.Serializer):
         animal = Animal.objects.create(**validated_data, group=group)
 
         for characteristic in characteristics:
-            c, _ =Characteristic.objects.get_or_create(**characteristic)
+            c, _ = Characteristic.objects.get_or_create(**characteristic)
             animal.characteristics.add(c)
-
 
         return animal
 
-
+    def update(self, instance, validated_data):
         
+        instance.name = validated_data.get('name', instance.name)
+        instance.age = validated_data.get('age', instance.age)
+        instance.weight = validated_data.get('weight', instance.weight)
+        
+        instance.save()
 
+        return instance
 
     

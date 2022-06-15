@@ -1,3 +1,5 @@
+from functools import partial
+from django.shortcuts import get_object_or_404
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -23,4 +25,15 @@ class AnimalView(APIView):
         serializer.save()
 
         return Response(serializer.data, status.HTTP_201_CREATED)
-    
+
+    def patch(self, request, animal_id):
+
+        animal = Animal.objects.get(pk=int(animal_id))
+
+        serializer = AnimalSerializer(animal, data=request.data, partial=True)
+
+        serializer.is_valid(raise_exception=True)
+
+        serializer.save()
+
+        return Response(serializer.data, status.HTTP_200_OK)
