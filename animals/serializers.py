@@ -31,13 +31,15 @@ class AnimalSerializer(serializers.Serializer):
         return animal
 
     def update(self, instance, validated_data):
-        
-        instance.name = validated_data.get('name', instance.name)
-        instance.age = validated_data.get('age', instance.age)
-        instance.weight = validated_data.get('weight', instance.weight)
-        
+
+        keys_not_available = ('sex', 'group',)
+
+        for key, value in validated_data.items():
+            if not key in keys_not_available:
+                setattr(instance, key, value)
+            else:
+                raise KeyError
+
         instance.save()
 
         return instance
-
-    
