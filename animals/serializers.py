@@ -1,3 +1,4 @@
+from unicodedata import name
 from rest_framework import serializers
 
 from characteristics.models import Characteristic
@@ -31,14 +32,19 @@ class AnimalSerializer(serializers.Serializer):
         return animal
 
     def update(self, instance, validated_data):
-
         keys_not_available = ('sex', 'group',)
 
         for key, value in validated_data.items():
-            if not key in keys_not_available:
-                setattr(instance, key, value)
+            if key in keys_not_available:
+                raise KeyError(key)
+
+            if key == "characteristics" and type(value) == list:
+                for characteristic in value:
+                    c, _ = Characteristic.objects.get_or_create(**characteristic)
+                    instance.characteristics.add(c)
+            
             else:
-                raise KeyError
+                setattr(instance, key, value)
 
         instance.save()
 

@@ -39,10 +39,14 @@ class AnimalViewDetail(APIView):
         serializer = AnimalSerializer(animal, data=request.data, partial=True)
 
         serializer.is_valid(raise_exception=True)
+
         try:
             serializer.save()
-        except KeyError:
-            return Response({"message": f'You can not update {request.data} property'}, status.HTTP_422_UNPROCESSABLE_ENTITY)
+        except KeyError as key:
+            return Response(
+                {"message": f'You can not update {key} property'}, 
+                status.HTTP_422_UNPROCESSABLE_ENTITY
+            )
 
         return Response(serializer.data, status.HTTP_200_OK)
 
