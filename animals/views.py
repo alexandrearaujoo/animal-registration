@@ -55,4 +55,4 @@ class AnimalViewDetail(APIView):
 
         animal.delete()
 
-        return Response()
+        return Response(status.HTTP_204_NO_CONTENT)
